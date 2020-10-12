@@ -1,9 +1,7 @@
 const app = Vue.createApp({
     data() {
         return {
-            user1Typed: false,
-            user2Typed: false,
-            isHidden: false,
+            inputClass: '',
             isVisible: true,
             backColor: ''
         };
@@ -11,30 +9,16 @@ const app = Vue.createApp({
     computed: {
         field1Classes() {
             return {
-                user1: this.user1Typed,
-                user2: this.user2Typed,
-                hidden: this.isHidden,
+                user1: this.inputClass === 'user1',
+                user2: this.inputClass === 'user2',
+                hidden: !this.isVisible,
                 visible: this.isVisible
             }
         }
     },
     methods: {
-        checkInput(event) {
-            if (event.target.value === 'user1') {
-                this.user1Typed = true;
-            } else if (event.target.value === 'user2') {
-                this.user2Typed = true;
-            } else {
-                this.user1Typed = false;
-                this.user2Typed = false;
-            }
-        },
         toggleVisibility() {
             this.isVisible = !this.isVisible;
-            this.isHidden = !this.isHidden;
-        },
-        getBackground(event) {
-            this.backColor = event.target.value;
         }
     }
 });
