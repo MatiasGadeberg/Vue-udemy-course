@@ -45,7 +45,14 @@
       </section>
       <section id="log" class="container">
         <h2>Battle Log</h2>
-        <ul></ul>
+        <ul> 
+          <li v-for="log in battleLog" 
+              key="log.value"
+              :class="log.logType"
+          >
+            {{log.value}} 
+          </li>
+        </ul>
       </section>
     </div>
   </body>

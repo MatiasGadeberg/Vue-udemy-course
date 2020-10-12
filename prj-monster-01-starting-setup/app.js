@@ -19,7 +19,8 @@ const app = Vue.createApp({
             playerHealth: 100,
             specialAttackAvailable: true,
             roundsToSpecial: 0,
-            winner: null
+            winner: null,
+            battleLog: [],
         }
     },
     watch: {
@@ -75,17 +76,20 @@ const app = Vue.createApp({
            const attackValue = randRange(12,5);
            this.monsterHealth -= attackValue;
            this.roundsToSpecial--;
+           this.logEvent('player', 'attack', attackValue);
            this.attackPlayer();
         },
         attackPlayer() {
             const attackValue = randRange(15,8);
             this.playerHealth -= attackValue;
+            this.logEvent('monster', 'attack', attackValue);
         },
         specialAttackMonster() {
            const attackValue = randRange(25,10);
            this.monsterHealth -= attackValue;
            this.roundsToSpecial = 2;
            this.toggleSpecial();
+           this.logEvent('player', 'special', attackValue);
            this.attackPlayer();
         },
         healPlayer() {
@@ -95,6 +99,7 @@ const app = Vue.createApp({
             } else {
                 this.playerHealth += healValue;
             }
+            this.logEvent('player', 'heal', healValue);
             this.attackPlayer();
             this.roundsToSpecial--;
         },
@@ -104,12 +109,28 @@ const app = Vue.createApp({
             this.winner = null,
             this.roundsToSpecial = -1;
             this.specialAttackAvailable = true;
+            this.battleLog = [];
         },
         surrender() {
             this.winner = 'Monster'
         },
         toggleSpecial() {
             this.specialAttackAvailable = !this.specialAttackAvailable;
+        },
+        logEvent(character, type, value) {
+            
+            if (type === 'heal') {
+                logStr = `The ${character} healed ${value} hitpoints!`
+            } else if (type === 'special') {
+                logStr = `The ${character} used a special attack and dealt ${value} points of damage!`
+            } else {
+                logStr = `The ${character} attacked and dealt ${value} points of damage!`
+            }
+            
+            this.battleLog.unshift({
+                logType: 'log--' + character,
+                value: logStr
+            })
         }
     }
 });
