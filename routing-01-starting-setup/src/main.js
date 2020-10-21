@@ -15,7 +15,11 @@ const router = createRouter({
     {
       path: '/users',
       component: UsersList
-    }
+    },
+    {
+      path: '/teams/:teamId',
+      component: () => import('./components/teams/TeamMembers.vue'),
+    },
   ]
 });
 
